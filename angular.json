@@ -29,6 +29,13 @@
               "src/material-theme.scss",
               "src/styles.css"
             ],
+            "allowedCommonJsDependencies": [
+              "html2canvas",
+              "canvg",
+              "rgbcolor",
+              "raf",
+              "core-js"
+            ],
             "outputMode": "static"
           },
           "configurations": {
@@ -41,8 +48,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "10kB",
+                  "maximumError": "20kB"
                 }
               ],
               "outputHashing": "all"

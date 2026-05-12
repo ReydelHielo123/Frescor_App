@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
-import { HeaderComponent } from '../components/header/header.component';
 
 @Component({
   selector: 'app-landing',
   standalone: true,
   templateUrl: './landing.component.html',
-  styleUrls: ['./landing.component.css'],
-  imports: [HeaderComponent],
+  styleUrls: ['./landing.component.css']
 })
 export class LandingComponent {
   isMenuOpen = false;
