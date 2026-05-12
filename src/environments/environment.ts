@@ -1,4 +1,4 @@
 export const environment = {
-    production: false,
-    apiUrl: 'https://localhost:7175/api'
+    production: true,
+    apiUrl: 'https://frescorapi-production.up.railway.app/api'
 };
