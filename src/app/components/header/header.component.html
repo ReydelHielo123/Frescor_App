@@ -1,0 +1,49 @@
+<header class="fixed w-full top-0 z-50 bg-white/95 backdrop-blur-sm shadow-md">
+    <nav class="container mx-auto px-4 py-4">
+        <div class="flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="w-10 h-10 bg-ice-600 rounded-lg flex items-center justify-center">
+                    <span class="text-white text-2xl">❄️</span>
+                </div>
+                <span class="text-2xl font-bold text-ice-700">Frescor</span>
+            </div>
+
+            <div class="hidden md:flex items-center space-x-8">
+                <button (click)="scrollToSection('hero')"
+                    class="text-frost-700 hover:text-ice-600 font-medium transition">Inicio</button>
+                <button (click)="scrollToSection('products')"
+                    class="text-frost-700 hover:text-ice-600 font-medium transition">Productos</button>
+                <button (click)="scrollToSection('about')"
+                    class="text-frost-700 hover:text-ice-600 font-medium transition">Nosotros</button>
+                <button (click)="scrollToSection('contact')"
+                    class="text-frost-700 hover:text-ice-600 font-medium transition">Contacto</button>
+                <button routerLink="/pedido" class="btn-primary">Pedir Ahora</button>
+            </div>
+
+            <button (click)="isMenuOpen = !isMenuOpen" class="md:hidden text-frost-700">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    @if(!isMenuOpen){
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    }
+                    @if (isMenuOpen) {
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    }
+                </svg>
+            </button>
+        </div>
+
+        @if (isMenuOpen) {
+        <div class="md:hidden mt-4 pb-4 space-y-4">
+            <button (click)="scrollToSection('hero')"
+                class="block w-full text-left text-frost-700 hover:text-ice-600 font-medium">Inicio</button>
+            <button (click)="scrollToSection('products')"
+                class="block w-full text-left text-frost-700 hover:text-ice-600 font-medium">Productos</button>
+            <button (click)="scrollToSection('about')"
+                class="block w-full text-left text-frost-700 hover:text-ice-600 font-medium">Nosotros</button>
+            <button (click)="scrollToSection('contact')"
+                class="block w-full text-left text-frost-700 hover:text-ice-600 font-medium">Contacto</button>
+            <button (click)="scrollToSection('contact')" class="btn-primary w-full">Pedir Ahora</button>
+        </div>
+        }
+    </nav>
+</header>

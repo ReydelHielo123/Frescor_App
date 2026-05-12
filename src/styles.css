@@ -1,3 +1,32 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import "tailwindcss";
+
+@theme {
+  /* ❄️ ICE = color principal */
+  --color-ice-50: #ecfeff;
+  --color-ice-100: #cffafe;
+  --color-ice-200: #a5f3fc;
+  --color-ice-300: #67e8f9;
+  --color-ice-400: #22d3ee;
+  --color-ice-500: #06b6d4;
+  --color-ice-600: #0891b2;
+  --color-ice-700: #0e7490;
+  --color-ice-800: #155e75;
+
+  /* 🧊 FROST = neutros */
+  --color-frost-50: #f8fafc;
+  --color-frost-100: #f1f5f9;
+  --color-frost-200: #e2e8f0;
+  --color-frost-300: #cbd5e1;
+  --color-frost-500: #64748b;
+  --color-frost-700: #334155;
+  --color-frost-800: #1e293b;
+
+  /* 💧 WATER = fondos */
+  --color-water-50: #f0f9ff;
+  --color-water-100: #e0f2fe;
+  --color-water-200: #bae6fd;
+
+  /* ✅ feedback */
+  --color-success-500: #22c55e;
+  --color-danger-500: #ef4444;
+}

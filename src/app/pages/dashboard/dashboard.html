@@ -1,0 +1,140 @@
+<app-admin-layout>
+
+    <!-- MÉTRICAS -->
+    @if (authService.isAdmin()) {
+    <div class="seccion-titulo">Resumen del día</div>
+    <div class="metricas-grid" *ngIf="metricas">
+        <div class="metrica-card">
+            <span class="metrica-label">Pedidos hoy</span>
+            <span class="metrica-valor">{{ metricas.pedidosHoy }}</span>
+        </div>
+        <div class="metrica-card verde">
+            <span class="metrica-label">Total facturado</span>
+            <span class="metrica-valor">$ {{ metricas.totalHoy | number:'1.2-2':'es-AR' }}</span>
+        </div>
+        <div class="metrica-card azul">
+            <span class="metrica-label">Pagados</span>
+            <span class="metrica-valor">{{ metricas.pedidosPagados }}</span>
+        </div>
+        <div class="metrica-card amarillo">
+            <span class="metrica-label">Pendientes</span>
+            <span class="metrica-valor">{{ metricas.pedidosPendientes }}</span>
+        </div>
+        <div class="metrica-card">
+            <span class="metrica-label">Efectivo</span>
+            <span class="metrica-valor">{{ metricas.pedidosEfectivo }}</span>
+        </div>
+        <div class="metrica-card">
+            <span class="metrica-label">MercadoPago</span>
+            <span class="metrica-valor">{{ metricas.pedidosMP }}</span>
+        </div>
+    </div>
+    }
+
+    <!-- FILTROS -->
+    <div class="seccion-titulo">Pedidos</div>
+    <div class="filtros-card">
+        <div class="filtros-grid">
+            <div class="filtro-field">
+                <label>Desde</label>
+                <input type="date" [(ngModel)]="filtros.desde">
+            </div>
+            <div class="filtro-field">
+                <label>Hasta</label>
+                <input type="date" [(ngModel)]="filtros.hasta">
+            </div>
+            <div class="filtro-field">
+                <label>Dirección</label>
+                <input type="text" [(ngModel)]="filtros.direccion" placeholder="Buscar dirección...">
+            </div>
+            <div class="filtro-field">
+                <label>Zona</label>
+                <input type="number" [(ngModel)]="filtros.zona" placeholder="N° de zona">
+            </div>
+            <div class="filtro-field">
+                <label>Forma de pago</label>
+                <select [(ngModel)]="filtros.formaPago">
+                    <option value="">Todas</option>
+                    <option value="efectivo">Efectivo</option>
+                    <option value="mercadopago">MercadoPago</option>
+                </select>
+            </div>
+            <div class="filtro-field">
+                <label>Estado</label>
+                <select [(ngModel)]="filtros.estado">
+                    <option value="">Todos</option>
+                    <option value="Pagado">Pagado</option>
+                    <option value="PendientePago">Pendiente</option>
+                    <option value="PagoRechazado">Rechazado</option>
+                </select>
+            </div>
+        </div>
+        <div class="filtros-botones">
+            <button class="btn-limpiar" (click)="limpiarFiltros()">Limpiar</button>
+            <button class="btn-exportar" (click)="exportarExcel()">📥 Exportar CSV</button>
+            <button class="btn-filtrar" (click)="filtrar()">Buscar</button>
+        </div>
+    </div>
+
+    <!-- TABLA -->
+    <div class="tabla-wrapper">
+        <div class="tabla-info">
+            <span>{{ totalRegistros }} registros encontrados</span>
+            <span>Página {{ paginaActual }} de {{ totalPaginas }}</span>
+        </div>
+
+        <div class="cargando" *ngIf="cargandoPedidos">Cargando...</div>
+
+        <div class="tabla-scroll" *ngIf="!cargandoPedidos">
+            <table class="tabla">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Fecha</th>
+                        <th>Dirección</th>
+                        <th>1.5kg</th>
+                        <th>2.5kg</th>
+                        <th>10.5kg</th>
+                        <th>Trit.</th>
+                        <th>4.5kg</th>
+                        <th>Total</th>
+                        <th>Zona</th>
+                        <th>Pago</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let p of pedidos">
+                        <td>{{ p.id }}</td>
+                        <td>{{ formatFecha(p.fecha_Carga) }}</td>
+                        <td class="direccion-cell">{{ p.direccion }}</td>
+                        <td>{{ p.kg1_5 }}</td>
+                        <td>{{ p.kg2_5 }}</td>
+                        <td>{{ p.kg10_5 }}</td>
+                        <td>{{ p.triturado }}</td>
+                        <td>{{ p.kg4_5 }}</td>
+                        <td>{{ formatMonto(p.precio_Total) }}</td>
+                        <td>{{ p.zona }}</td>
+                        <td>{{ p.formaPago }}</td>
+                        <td>
+                            <span class="estado-badge" [class.pagado]="p.estado === 'Pagado'"
+                                [class.pendiente]="p.estado === 'PendientePago'"
+                                [class.rechazado]="p.estado === 'PagoRechazado'">
+                                {{ p.estado }}
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- PAGINADO -->
+        <div class="paginado" *ngIf="totalPaginas > 1">
+            <button (click)="cambiarPagina(paginaActual - 1)" [disabled]="paginaActual === 1">←</button>
+            <span>{{ paginaActual }} / {{ totalPaginas }}</span>
+            <button (click)="cambiarPagina(paginaActual + 1)" [disabled]="paginaActual === totalPaginas">→</button>
+        </div>
+
+    </div>
+
+</app-admin-layout>

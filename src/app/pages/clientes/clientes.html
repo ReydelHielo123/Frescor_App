@@ -1,0 +1,147 @@
+<app-admin-layout>
+
+    <div class="page-header">
+        <div>
+            <h2>Clientes</h2>
+            <p>Administrá los clientes registrados.</p>
+        </div>
+        <button class="btn-nuevo" (click)="abrirNuevo()">+ Nuevo cliente</button>
+    </div>
+
+    <div class="mensaje-exito" *ngIf="mensajeExito">✅ {{ mensajeExito }}</div>
+    <div class="mensaje-error" *ngIf="mensajeError && !modalAbierto">❌ {{ mensajeError }}</div>
+
+    <!-- FILTROS -->
+    <div class="filtros-card">
+        <div class="filtros-grid">
+            <div class="filtro-field">
+                <label>Teléfono</label>
+                <input type="text" [(ngModel)]="filtros.telefono" placeholder="Buscar teléfono...">
+            </div>
+            <div class="filtro-field">
+                <label>Dirección</label>
+                <input type="text" [(ngModel)]="filtros.direccion" placeholder="Buscar dirección...">
+            </div>
+            <div class="filtro-field">
+                <label>Zona</label>
+                <input type="number" [(ngModel)]="filtros.zona" placeholder="N° de zona">
+            </div>
+        </div>
+        <div class="filtros-botones">
+            <button class="btn-limpiar" (click)="limpiarFiltros()">Limpiar</button>
+            <button class="btn-filtrar" (click)="filtrar()">Buscar</button>
+        </div>
+    </div>
+
+    <!-- TABLA -->
+    <div class="tabla-wrapper">
+        <div class="tabla-info">
+            <span>{{ totalRegistros }} clientes encontrados</span>
+            <span>Página {{ paginaActual }} de {{ totalPaginas }}</span>
+        </div>
+
+        <div class="cargando" *ngIf="cargando">Cargando...</div>
+
+        <div class="tabla-scroll" *ngIf="!cargando">
+            <table class="tabla">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Teléfono</th>
+                        <th>Dirección</th>
+                        <th>Zona</th>
+                        <th>Cupón</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let c of clientes">
+                        <td>{{ c.id }}</td>
+                        <td>{{ c.telefono }}</td>
+                        <td class="direccion-cell">{{ c.direccion }}</td>
+                        <td>{{ c.zona }}</td>
+                        <td>{{ c.nombreCupon || '-' }}</td>
+                        <td>
+                            <button class="btn-editar" (click)="abrirEdicion(c)">✏️ Editar</button>
+                            <button class="btn-eliminar" (click)="confirmarEliminar(c)">🗑️ Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="paginado" *ngIf="totalPaginas > 1">
+            <button (click)="cambiarPagina(paginaActual - 1)" [disabled]="paginaActual === 1">←</button>
+            <span>{{ paginaActual }} / {{ totalPaginas }}</span>
+            <button (click)="cambiarPagina(paginaActual + 1)" [disabled]="paginaActual === totalPaginas">→</button>
+        </div>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" *ngIf="modalAbierto" (click)="cerrarModal()">
+        <div class="modal" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h3>{{ modoEdicion ? 'Editar cliente' : 'Nuevo cliente' }}</h3>
+                <button class="modal-close" (click)="cerrarModal()">✕</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-field">
+                    <label>Teléfono *</label>
+                    <input type="text" [(ngModel)]="clienteForm.telefono" placeholder="Ej: 3512345678">
+                </div>
+                <div class="form-field">
+                    <label>Dirección *</label>
+                    <input type="text" [(ngModel)]="clienteForm.direccion" placeholder="Ej: Av. Colón 1234">
+                </div>
+                <div class="form-field">
+                    <label>Zona</label>
+                    <input type="number" [(ngModel)]="clienteForm.zona" placeholder="N° de zona">
+                </div>
+                <div class="form-field">
+                    <label>Cupón descuento (ID)</label>
+                    <input type="number" [(ngModel)]="clienteForm.cuponDescuento">
+                </div>
+                <div class="form-field">
+                    <label>Nombre cupón</label>
+                    <input type="text" [(ngModel)]="clienteForm.nombreCupon" placeholder="Ej: PROMO10">
+                </div>
+                <div class="form-field checkbox-field">
+                    <label class="checkbox-label">
+                        <input type="checkbox" [(ngModel)]="clienteForm.otrosMediosPago"
+                            [ngModelOptions]="{standalone: true}">
+                        <span>Permite otros medios de pago (Transferencia)</span>
+                    </label>
+                </div>
+
+                <p class="error" *ngIf="mensajeError">{{ mensajeError }}</p>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-cancelar" (click)="cerrarModal()">Cancelar</button>
+                <button class="btn-guardar" (click)="guardar()" [disabled]="guardando">
+                    {{ guardando ? 'Guardando...' : 'Guardar' }}
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CONFIRMAR ELIMINAR -->
+    <div class="modal-overlay" *ngIf="modalEliminarAbierto" (click)="cancelarEliminar()">
+        <div class="modal modal-confirmar" (click)="$event.stopPropagation()">
+            <div class="modal-header danger">
+                <h3>Confirmar eliminación</h3>
+                <button class="modal-close" (click)="cancelarEliminar()">✕</button>
+            </div>
+            <div class="modal-body">
+                <p>¿Seguro que querés eliminar al cliente?</p>
+                <p class="detalle-eliminar">📍 {{ clienteAEliminar?.direccion }}</p>
+                <p class="detalle-eliminar">📞 {{ clienteAEliminar?.telefono }}</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancelar" (click)="cancelarEliminar()">Cancelar</button>
+                <button class="btn-eliminar-confirmar" (click)="eliminar()">Sí, eliminar</button>
+            </div>
+        </div>
+    </div>
+</app-admin-layout>

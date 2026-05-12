@@ -1,0 +1,417 @@
+<div class="min-h-screen bg-water-50 flex items-center justify-center px-4">
+    <div class="w-full max-w-2xl rounded-3xl border border-frost-200 bg-white p-8 shadow-xl">
+
+        <!-- HEADER -->
+        <div class="header-frescor">
+            <img src="logo-frescor.jpeg" alt="Hielo Fres-Cor" class="logo-frescor">
+        </div>
+
+
+        <!-- ✅ Stepper arriba -->
+        <div class="mb-8 flex items-center justify-between">
+            <div class="flex-1 text-center font-semibold" [class.text-ice-600]="currentStep() >= 1"
+                [class.text-frost-400]="currentStep() < 1">
+                1. Teléfono
+            </div>
+
+            <div class="flex-1 text-center font-semibold" [class.text-ice-600]="currentStep() >= 2"
+                [class.text-frost-400]="currentStep() < 2">
+                2. Dirección
+            </div>
+
+            <div class="flex-1 text-center font-semibold" [class.text-ice-600]="currentStep() >= 3"
+                [class.text-frost-400]="currentStep() < 3">
+                3. Productos
+            </div>
+
+            <div class="flex-1 text-center font-semibold" [class.text-ice-600]="currentStep() >= 4"
+                [class.text-frost-400]="currentStep() < 4">
+                4. Pago
+            </div>
+        </div>
+
+        <!-- Paso 1 -->
+        @if (currentStep() === 1) {
+        <div class="space-y-4">
+            <label class="block text-sm font-semibold text-frost-700">
+                Número telefónico
+            </label>
+
+            <input type="tel" [(ngModel)]="telefono" placeholder="351 123 4567"
+                class="w-full rounded-2xl border border-frost-300 px-4 py-3" />
+
+            <button type="button" (click)="continuarTelefono()"
+                class="w-full rounded-2xl bg-ice-600 px-6 py-3 text-white">
+                Continuar
+            </button>
+        </div>
+        }
+
+        <!-- Paso 2 -->
+        @if (currentStep() === 2) {
+        <div class="space-y-4">
+            <label class="block text-sm font-semibold text-frost-700">
+                Seleccioná la dirección
+            </label>
+
+            <select [(ngModel)]="direccionSeleccionada" class="w-full rounded-2xl border border-frost-300 px-4 py-3">
+                <option value="" disabled selected>Seleccioná una dirección</option>
+                @for (dir of direcciones; track dir) {
+                <option [ngValue]="dir">{{ dir.direccionMayusculas }}</option>
+                }
+            </select>
+
+            <div class="flex gap-4">
+                <button (click)="prevStep()" class="w-full rounded-2xl border border-frost-300 px-6 py-3">
+                    Volver
+                </button>
+
+                <button (click)="nextStep()" class="w-full rounded-2xl bg-ice-600 px-6 py-3 text-white">
+                    Continuar
+                </button>
+            </div>
+        </div>
+        }
+
+        <!-- Paso 3 -->
+        @if (currentStep() === 3) {
+        <div class="space-y-6">
+            <h2 class="text-2xl font-bold text-frost-800">
+                Seleccioná las cantidades 🧊
+            </h2>
+
+            <div class="grid gap-4 md:grid-cols-2">
+
+                <!-- 1.5kg -->
+                <div>
+                    <label class="mb-2 block font-medium text-frost-700">
+                        Bolsas de 1,5kg
+                    </label>
+                    <select [(ngModel)]="cantidades.bolsa15" (ngModelChange)="getTotal()"
+                        class="w-full rounded-2xl border border-frost-300 px-4 py-3 ng-untouched ng-pristine ng-valid">
+                        <option [ngValue]="null">
+                            Seleccioná la cantidad
+                        </option>
+                        @for (cant of opciones15kg; track cant) {
+                        <option [value]="cant">{{ cant }}</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- 2.5kg -->
+                <div>
+                    <label class="mb-2 block font-medium text-frost-700">
+                        Bolsas de 2,5kg
+                    </label>
+                    <select [(ngModel)]="cantidades.bolsa25" (ngModelChange)="getTotal()"
+                        class="w-full rounded-2xl border border-frost-300 px-4 py-3 ng-untouched ng-pristine ng-valid">
+                        <option [ngValue]="null">
+                            Seleccioná la cantidad
+                        </option>
+                        @for (cant of opciones25kg; track cant) {
+                        <option [value]="cant">{{ cant }}</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- 4.5kg -->
+                <div>
+                    <label class="mb-2 block font-medium text-frost-700">
+                        Bolsas de 4,5kg
+                    </label>
+                    <select [(ngModel)]="cantidades.bolsa45" (ngModelChange)="getTotal()"
+                        class="w-full rounded-2xl border border-frost-300 px-4 py-3 ng-untouched ng-pristine ng-valid">
+                        <option [ngValue]="null">
+                            Seleccioná la cantidad
+                        </option>
+                        @for (cant of opciones45kg; track cant) {
+                        <option [value]="cant">{{ cant }}</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- 10kg -->
+                <div>
+                    <label class="mb-2 block font-medium text-frost-700">
+                        Bolsas de 10kg
+                    </label>
+                    <select [(ngModel)]="cantidades.bolsa10" (ngModelChange)="getTotal()"
+                        class="w-full rounded-2xl border border-frost-300 px-4 py-3 ng-untouched ng-pristine ng-valid">
+                        <option [ngValue]="null">
+                            Seleccioná la cantidad
+                        </option>
+                        @for (cant of opciones10kg; track cant) {
+                        <option [value]="cant">{{ cant }}</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- Triturado -->
+                <div class="md:col-span-2">
+                    <label class="mb-2 block font-medium text-frost-700">
+                        Bolsa 10kg Triturado
+                    </label>
+                    <select [(ngModel)]="cantidades.triturado10" (ngModelChange)="getTotal()"
+                        class="w-full rounded-2xl border border-frost-300 px-4 py-3 ng-untouched ng-pristine ng-valid">
+                        <option [ngValue]="null">
+                            Seleccioná la cantidad
+                        </option>
+                        @for (cant of opcionesTriturado; track cant) {
+                        <option [value]="cant">{{ cant }}</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="mt-6 rounded-3xl border border-yellow-200 bg-yellow-50 p-6 shadow-sm">
+                <p class="text-xl font-medium text-yellow-700">Total de pedido:</p>
+
+                @if (porcentajeDescuento > 0) {
+                <div class="mt-2 inline-block rounded-xl bg-green-100 px-3 py-1 text-sm font-semibold text-green-700">
+                    {{ porcentajeDescuento }}% de descuento aplicado
+                </div>
+                }
+
+                @if (tieneDescuento) {
+                <p class="mt-2 text-2xl text-gray-400 line-through">
+                    {{ totalSinDescuento | currency:'ARS':'symbol':'1.2-2':'es-AR' }}
+                </p>
+                <p class="mt-1 text-4xl font-bold text-ice-700">
+                    {{ totalConDescuento | currency:'ARS':'symbol':'1.2-2':'es-AR' }}
+                </p>
+                }
+
+                @if (!tieneDescuento) {
+                <p class="mt-2 text-4xl font-bold text-ice-700">
+                    {{ totalSinDescuento | currency:'ARS':'symbol':'1.2-2':'es-AR' }}
+                </p>
+                }
+            </div>
+            @if (errorProductos) {
+            <p class="mt-3 rounded-xl bg-red-50 p-3 text-sm font-medium text-red-600">
+                {{ errorProductos }}
+            </p>
+            }
+
+            <div class="flex gap-4">
+                <button (click)="prevStep()" class="w-full rounded-2xl border border-frost-300 px-6 py-3">
+                    Volver
+                </button>
+
+                <button (click)="nextStep()" class="w-full rounded-2xl bg-ice-600 px-6 py-3 text-white">
+                    Continuar
+                </button>
+            </div>
+        </div>
+        }
+
+        <!-- Paso 4 Forma de pago -->
+        @if (currentStep() === 4) {
+        <div class="space-y-6">
+
+            <h2 class="text-2xl font-bold text-frost-800">
+                Seleccioná el medio de pago 💳
+            </h2>
+
+            <div class="grid gap-4">
+                <button (click)="seleccionarMedioPago('mercadopago')" [class.bg-ice-600]="medioPago === 'mercadopago'"
+                    [class.text-white]="medioPago === 'mercadopago'"
+                    [class.border-ice-600]="medioPago === 'mercadopago'"
+                    class="rounded-2xl border border-frost-300 p-4 text-left transition duration-200 hover:border-ice-500">
+
+                    <div class="font-semibold">💳 Mercado Pago</div>
+                    <div class="text-sm opacity-80">
+                        Tarjeta, débito, crédito, etc.
+                    </div>
+                </button>
+
+                <button (click)="seleccionarMedioPago('efectivo')" [class.bg-ice-600]="medioPago === 'efectivo'"
+                    [class.text-white]="medioPago === 'efectivo'" [class.border-ice-600]="medioPago === 'efectivo'"
+                    class="rounded-2xl border border-frost-300 p-4 text-left transition duration-200 hover:border-ice-500">
+
+                    <div class="font-semibold">💵 Efectivo</div>
+                    <div class="text-sm opacity-80">
+                        Pago al recibir el pedido
+                    </div>
+                </button>
+            </div>
+
+            <div class="rounded-2xl bg-water-100 p-4 mb-3">
+
+                @if (tieneDescuento && !tieneDescuentoEfectivo) {
+                <p class="text-sm text-gray-400 line-through">
+                    {{ totalSinDescuento | currency:'ARS':'symbol':'1.2-2':'es-AR' }}
+                </p>
+                <p class="text-sm font-medium text-green-600">
+                    {{ porcentajeDescuento }}% de descuento aplicado
+                </p>
+                <p class="text-lg font-bold text-frost-800">
+                    Total: {{ totalConDescuento | currency:'ARS':'symbol':'1.2-2':'es-AR' }}
+                </p>
+                }
+
+                @if (tieneDescuentoEfectivo && tieneDescuento) {
+                <p class="text-sm text-gray-400 line-through">
+                    {{ totalSinDescuento | currency:'ARS':'symbol':'1.2-2':'es-AR' }}
+                </p>
+                <p class="text-sm font-medium text-green-600">
+                    {{ porcentajeDescuento }}% de descuento aplicado
+                </p>
+                <p class="text-sm text-gray-400 line-through">
+                    {{ totalConDescuento | currency:'ARS':'symbol':'1.2-2':'es-AR' }}
+                </p>
+                <p class="text-sm font-medium text-green-600">
+                    {{ descuentoEfectivo }}% adicional por pago en efectivo
+                </p>
+                <p class="text-lg font-bold text-frost-800">
+                    Total: {{ totalConDescuentoEfectivo | currency:'ARS':'symbol':'1.2-2':'es-AR' }}
+                </p>
+                }
+
+                @if (tieneDescuentoEfectivo && !tieneDescuento) {
+                <p class="text-sm text-gray-400 line-through">
+                    {{ totalSinDescuento | currency:'ARS':'symbol':'1.2-2':'es-AR' }}
+                </p>
+                <p class="text-sm font-medium text-green-600">
+                    {{ descuentoEfectivo }}% de descuento por pago en efectivo
+                </p>
+                <p class="text-lg font-bold text-frost-800">
+                    Total: {{ totalConDescuentoEfectivo | currency:'ARS':'symbol':'1.2-2':'es-AR' }}
+                </p>
+                }
+
+                @if (!tieneDescuento && !tieneDescuentoEfectivo) {
+                <p class="text-lg font-bold text-frost-800">
+                    Total: {{ totalPedido | currency:'ARS':'symbol':'1.2-2':'es-AR' }}
+                </p>
+                }
+            </div>
+        </div>
+
+        <div class="flex gap-4 mt-6">
+            <button (click)="prevStep()" class="w-full rounded-2xl border border-frost-300 px-6 py-3">
+                Volver
+            </button>
+
+            <button (click)="continuarPago()" [disabled]="currentStep() === 4 && !medioPago"
+                class="w-full rounded-2xl bg-ice-600 px-6 py-3 text-white disabled:opacity-50">
+                {{ getTextoBotonStep() }}
+            </button>
+        </div>
+        }
+
+        @if (currentStep() === 5) {
+        <div class="space-y-4">
+
+            <!-- Icono y título -->
+            <div class="text-center py-2">
+                <div class="text-5xl mb-3">✅</div>
+                <h2 class="text-2xl font-bold text-frost-800">¡Pedido confirmado!</h2>
+                <p class="text-frost-500 text-sm mt-1">Tu pedido fue registrado exitosamente</p>
+            </div>
+
+            <!-- Comprobante -->
+            <div class="rounded-2xl border border-frost-200 bg-white p-5 space-y-3">
+
+                <div class="flex justify-between items-center border-b border-frost-100 pb-3">
+                    <span class="text-sm text-frost-500">N° de orden</span>
+                    <span class="font-bold text-ice-700">#{{ pedidoConfirmado?.id }}</span>
+                </div>
+
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-frost-500">Fecha</span>
+                    <span class="text-sm font-medium">{{ pedidoConfirmado?.fecha_Carga | date:'dd/MM/yyyy HH:mm'
+                        }}</span>
+                </div>
+
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-frost-500">Dirección</span>
+                    <span class="text-sm font-medium text-right max-w-xs">{{ direccionSeleccionada?.direccionMayusculas
+                        }}</span>
+                </div>
+
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-frost-500">Zona</span>
+                    <span class="text-sm font-medium">{{ pedidoConfirmado?.zona }}</span>
+                </div>
+
+                <!-- Productos -->
+                <div class="border-t border-frost-100 pt-3 space-y-1">
+                    <p class="text-sm font-semibold text-frost-700 mb-2">Productos:</p>
+                    @if ((pedidoConfirmado?.kg1_5 ?? 0) > 0) {
+                    <div class="flex justify-between text-sm">
+                        <span class="text-frost-500">🧊 Bolsas 1,5kg</span>
+                        <span>{{ pedidoConfirmado?.kg1_5 }} unidades</span>
+                    </div>
+                    }
+                    @if ((pedidoConfirmado?.kg2_5 ?? 0) > 0) {
+                    <div class="flex justify-between text-sm">
+                        <span class="text-frost-500">🧊 Bolsas 2,5kg</span>
+                        <span>{{ pedidoConfirmado?.kg2_5 }} unidades</span>
+                    </div>
+                    }
+                    @if ((pedidoConfirmado?.kg4_5 ?? 0) > 0) {
+                    <div class="flex justify-between text-sm">
+                        <span class="text-frost-500">🧊 Bolsas 4,5kg</span>
+                        <span>{{ pedidoConfirmado?.kg4_5 }} unidades</span>
+                    </div>
+                    }
+                    @if ((pedidoConfirmado?.kg10_5 ?? 0) > 0) {
+                    <div class="flex justify-between text-sm">
+                        <span class="text-frost-500">🧊 Bolsas 10kg</span>
+                        <span>{{ pedidoConfirmado?.kg10_5 }} unidades</span>
+                    </div>
+                    }
+                    @if ((pedidoConfirmado?.triturado ?? 0) > 0) {
+                    <div class="flex justify-between text-sm">
+                        <span class="text-frost-500">🧊 Triturado 10kg</span>
+                        <span>{{ pedidoConfirmado?.triturado }} unidades</span>
+                    </div>
+                    }
+                </div>
+
+                <!-- Total y pago -->
+                <div class="border-t border-frost-100 pt-3 space-y-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-frost-500">Forma de pago</span>
+                        <span class="text-sm font-medium capitalize">{{ pedidoConfirmado?.formaPago }}</span>
+                    </div>
+                    @if (pedidoConfirmado?.paymentId) {
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-frost-500">Payment ID</span>
+                        <span class="text-sm font-medium">{{ pedidoConfirmado?.paymentId }}</span>
+                    </div>
+                    }
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-frost-500">Estado</span>
+                        <span class="text-sm font-semibold px-2 py-1 rounded-lg"
+                            [class.bg-green-100]="pedidoConfirmado?.estado === 'Pagado'"
+                            [class.text-green-700]="pedidoConfirmado?.estado === 'Pagado'"
+                            [class.bg-yellow-100]="pedidoConfirmado?.estado === 'PendientePago'"
+                            [class.text-yellow-700]="pedidoConfirmado?.estado === 'PendientePago'">
+                            {{ pedidoConfirmado?.estado === 'Pagado' ? 'Pagado' : 'Pendiente de pago' }}
+                        </span>
+                    </div>
+                    <div class="flex justify-between items-center pt-1">
+                        <span class="font-semibold text-frost-800">Total</span>
+                        <span class="font-bold text-xl text-ice-700">
+                            {{ pedidoConfirmado?.precio_Total | currency:'ARS':'symbol':'1.2-2':'es-AR' }}
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Botones -->
+            <button (click)="descargarComprobante()"
+                class="w-full rounded-2xl border border-ice-500 text-ice-600 px-6 py-3 font-medium">
+                📄 Descargar comprobante
+            </button>
+
+            <button (click)="nuevosPedido()" class="w-full rounded-2xl bg-ice-600 px-6 py-3 text-white font-medium">
+                Cargar otro pedido
+            </button>
+
+        </div>
+        }
+    </div>
+</div>

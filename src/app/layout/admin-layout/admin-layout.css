@@ -1,0 +1,245 @@
+:host {
+    display: block;
+    min-height: 100vh;
+}
+
+.admin-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: #F1EFE8;
+}
+
+.navbar {
+    background: #042C53;
+    padding: 0 1.5rem;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.menu-toggle {
+    background: transparent;
+    border: none;
+    color: #85B7EB;
+    font-size: 22px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    line-height: 1;
+}
+
+.menu-toggle:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.navbar-brand {
+    color: #85B7EB;
+    font-size: 18px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.usuario {
+    color: #B5D4F4;
+    font-size: 13px;
+}
+
+.btn-logout {
+    background: transparent;
+    border: 1px solid #378ADD;
+    color: #85B7EB;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.btn-logout:hover {
+    background: #378ADD;
+    color: white;
+}
+
+.admin-body {
+    display: flex;
+    flex: 1;
+}
+
+.sidebar {
+    width: 240px;
+    background: white;
+    border-right: 0.5px solid #D3D1C7;
+    position: sticky;
+    top: 60px;
+    height: calc(100vh - 60px);
+    overflow-y: auto;
+    padding: 1rem 0;
+    flex-shrink: 0;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0 0.75rem;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    color: #444441;
+    font-size: 15px;
+}
+
+.nav-item:hover {
+    background: #E6F1FB;
+    color: #185FA5;
+}
+
+.nav-item.activo {
+    background: #E6F1FB;
+    color: #185FA5;
+    font-weight: 500;
+}
+
+.nav-icon {
+    font-size: 18px;
+    width: 24px;
+    text-align: center;
+}
+
+.admin-content {
+    flex: 1;
+    padding: 2rem;
+    min-width: 0;
+}
+
+/* MOBILE small (< 480px) */
+@media (max-width: 479px) {
+    .navbar {
+        padding: 0 1rem;
+        height: 56px;
+    }
+
+    .navbar-brand {
+        font-size: 15px;
+    }
+
+    .usuario {
+        display: none;
+    }
+
+    .btn-logout {
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 56px;
+        left: -240px;
+        height: calc(100vh - 56px);
+        transition: left 0.25s ease;
+        z-index: 150;
+    }
+
+    .sidebar.abierto {
+        left: 0;
+    }
+
+    .admin-content {
+        padding: 0.75rem;
+    }
+}
+
+/* MOBILE (480px - 767px) */
+@media (min-width: 480px) and (max-width: 767px) {
+    .sidebar {
+        position: fixed;
+        top: 60px;
+        left: -240px;
+        height: calc(100vh - 60px);
+        transition: left 0.25s ease;
+        z-index: 150;
+    }
+
+    .sidebar.abierto {
+        left: 0;
+    }
+
+    .admin-content {
+        padding: 1rem;
+    }
+}
+
+/* TABLET (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .menu-toggle {
+        display: none;
+    }
+
+    .sidebar {
+        width: 210px;
+    }
+
+    .admin-content {
+        padding: 1.25rem;
+    }
+
+    .usuario {
+        font-size: 12px;
+        max-width: 120px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+/* Desktop (1024px - 1279px) */
+@media (min-width: 1024px) {
+    .menu-toggle {
+        display: none;
+    }
+
+    .admin-content {
+        padding: 2rem;
+    }
+}
+
+/* Large desktop (≥ 1280px) */
+@media (min-width: 1280px) {
+    .sidebar {
+        width: 260px;
+    }
+
+    .admin-content {
+        padding: 2.5rem;
+    }
+
+    .navbar-brand {
+        font-size: 20px;
+    }
+}

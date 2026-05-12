@@ -1,0 +1,170 @@
+:host {
+    display: block;
+    min-height: 100vh;
+    background: #F1EFE8;
+}
+
+.result-container {
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.header {
+    background: #042C53;
+    padding: 1.5rem;
+    text-align: center;
+    border-radius: 0 0 24px 24px;
+    margin-bottom: 2rem;
+}
+
+.header h1 {
+    color: #85B7EB;
+    font-size: 28px;
+    font-weight: 500;
+    margin: 0;
+}
+
+.result-card {
+    background: white;
+    border-radius: 16px;
+    border: 0.5px solid #D3D1C7;
+    padding: 2rem 1.5rem;
+    margin: 0 1.25rem;
+    text-align: center;
+}
+
+.result-icon {
+    font-size: 64px;
+    margin-bottom: 1rem;
+}
+
+.result h2 {
+    font-size: 22px;
+    font-weight: 500;
+    margin: 0 0 0.5rem;
+}
+
+.result p {
+    font-size: 15px;
+    color: #5F5E5A;
+    margin: 4px 0;
+}
+
+.detail {
+    font-size: 13px !important;
+    color: #888780 !important;
+    margin-top: 8px !important;
+}
+
+.approved h2 {
+    color: #1D9E75;
+}
+
+.pending h2 {
+    color: #BA7517;
+}
+
+.failure h2 {
+    color: #E24B4A;
+}
+
+button {
+    margin-top: 2rem;
+    background: #378ADD !important;
+    color: white !important;
+    height: 48px;
+    padding: 0 2rem;
+    width: 100%;
+}
+
+.btn-volver {
+    margin-top: 2rem;
+    background: #378ADD;
+    color: white;
+    height: 48px;
+    padding: 0 2rem;
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Small mobile (< 480px) */
+@media (max-width: 479px) {
+    .result-container {
+        max-width: 100%;
+    }
+
+    .header {
+        padding: 1rem;
+        border-radius: 0 0 18px 18px;
+        margin-bottom: 1.25rem;
+    }
+
+    .header h1 {
+        font-size: 22px;
+    }
+
+    .result-card {
+        padding: 1.5rem 1rem;
+        margin: 0 0.75rem;
+        border-radius: 12px;
+    }
+
+    .result-icon {
+        font-size: 48px;
+    }
+
+    .result h2 {
+        font-size: 18px;
+    }
+
+    .result p {
+        font-size: 14px;
+    }
+
+    button,
+    .btn-volver {
+        height: 44px;
+        font-size: 15px;
+    }
+}
+
+/* Mobile (480px - 767px) */
+@media (min-width: 480px) and (max-width: 767px) {
+    .result-container {
+        max-width: 100%;
+        padding: 0 1rem;
+    }
+
+    .result-card {
+        margin: 0;
+    }
+}
+
+/* Tablet (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .result-container {
+        max-width: 520px;
+    }
+
+    .header {
+        padding: 2rem;
+    }
+
+    .result-card {
+        padding: 2.5rem 2rem;
+    }
+}
+
+/* Desktop (≥ 1024px) */
+@media (min-width: 1024px) {
+    .result-container {
+        max-width: 560px;
+    }
+
+    .result-card {
+        padding: 2.5rem 2rem;
+    }
+}

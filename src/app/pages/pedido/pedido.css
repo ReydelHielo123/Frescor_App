@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+@layer components {
+    .form-group {
+        @apply space-y-2;
+    }
+
+    .form-label {
+        @apply block text-sm font-semibold text-slate-700;
+    }
+
+    .form-input {
+        @apply w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-slate-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition;
+    }
+
+    .form-select {
+        @apply w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-slate-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition;
+    }
+}
+
+.header-frescor {
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem 0 3rem;
+}
+
+.logo-frescor {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #85B7EB;
+    box-shadow: 0 4px 16px rgba(4, 44, 83, 0.15);
+}
+
+/* Small mobile (< 480px) */
+@media (max-width: 479px) {
+    .header-frescor {
+        padding: 0.5rem 0 2rem;
+    }
+
+    .logo-frescor {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+/* Mobile (480px - 767px) */
+@media (min-width: 480px) and (max-width: 767px) {
+    .header-frescor {
+        padding: 0.5rem 0 2.5rem;
+    }
+
+    .logo-frescor {
+        width: 130px;
+        height: 130px;
+    }
+}
+
+/* Tablet (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .logo-frescor {
+        width: 160px;
+        height: 160px;
+    }
+}
+
+/* Large desktop (≥ 1280px) */
+@media (min-width: 1280px) {
+    .logo-frescor {
+        width: 200px;
+        height: 200px;
+    }
+}

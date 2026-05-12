@@ -1,0 +1,163 @@
+:host {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #042C53 0%, #185FA5 100%);
+    padding: 1.5rem;
+    box-sizing: border-box;
+}
+
+.construccion-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.construccion-card {
+    background: white;
+    border-radius: 24px;
+    padding: 3rem 2rem;
+    text-align: center;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.logo {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #85B7EB;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 20px rgba(4, 44, 83, 0.15);
+}
+
+h1 {
+    font-size: 26px;
+    font-weight: 600;
+    color: #042C53;
+    margin: 0 0 1rem;
+}
+
+.badge {
+    display: inline-block;
+    background: #E6F1FB;
+    color: #185FA5;
+    border: 1px solid #85B7EB;
+    border-radius: 20px;
+    padding: 6px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+}
+
+p {
+    font-size: 15px;
+    color: #5F5E5A;
+    margin: 0 0 8px;
+}
+
+.sub {
+    font-size: 13px;
+    color: #B4B2A9;
+    margin: 0;
+}
+
+/* Small mobile (< 480px) */
+@media (max-width: 479px) {
+    :host {
+        padding: 1rem;
+    }
+
+    .construccion-card {
+        padding: 1.75rem 1.25rem;
+        border-radius: 20px;
+    }
+
+    .logo {
+        width: 90px;
+        height: 90px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    p {
+        font-size: 14px;
+    }
+
+    .sub {
+        font-size: 12px;
+    }
+
+    .badge {
+        font-size: 13px;
+        padding: 5px 16px;
+    }
+}
+
+/* Mobile (480px - 767px) */
+@media (min-width: 480px) and (max-width: 767px) {
+    .construccion-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .logo {
+        width: 100px;
+        height: 100px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+}
+
+/* Tablet (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .construccion-card {
+        max-width: 480px;
+        padding: 3.5rem 2.5rem;
+    }
+
+    .logo {
+        width: 150px;
+        height: 150px;
+    }
+
+    h1 {
+        font-size: 30px;
+    }
+
+    p {
+        font-size: 16px;
+    }
+
+    .sub {
+        font-size: 14px;
+    }
+}
+
+/* Large desktop (≥ 1280px) */
+@media (min-width: 1280px) {
+    .construccion-card {
+        max-width: 520px;
+        padding: 4rem 3rem;
+    }
+
+    .logo {
+        width: 160px;
+        height: 160px;
+    }
+
+    h1 {
+        font-size: 32px;
+    }
+
+    p {
+        font-size: 16px;
+    }
+}

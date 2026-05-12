@@ -1,0 +1,32 @@
+<app-admin-layout>
+
+    <div class="page-header">
+        <h2>Precios de productos</h2>
+        <p>Modificá el precio de cada tipo de bolsa.</p>
+    </div>
+
+    <div class="cargando" *ngIf="cargando">Cargando precios...</div>
+
+    <div class="mensaje-exito" *ngIf="mensajeExito">✅ {{ mensajeExito }}</div>
+    <div class="mensaje-error" *ngIf="mensajeError">❌ {{ mensajeError }}</div>
+
+    <div class="precios-grid" *ngIf="!cargando">
+        <div class="precio-card" *ngFor="let precio of precios">
+            <div class="precio-info">
+                <span class="precio-icon">🧊</span>
+                <div>
+                    <p class="precio-tipo">{{ precio.tipoBolsa }}</p>
+                    <p class="precio-cantidad">x{{ precio.cantidadBolsa }} unidades</p>
+                </div>
+            </div>
+            <div class="precio-editar">
+                <label>Precio ($)</label>
+                <input type="number" [(ngModel)]="precio.precioEditado" min="0" step="0.01">
+                <button class="btn-guardar" (click)="guardarPrecio(precio)" [disabled]="guardando">
+                    Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+
+</app-admin-layout>

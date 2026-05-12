@@ -1,0 +1,51 @@
+<div class="admin-wrapper">
+
+    <nav class="navbar">
+        <div class="navbar-left">
+            <button class="menu-toggle" (click)="toggleMenu()">☰</button>
+            <span class="navbar-brand">🧊 Frescor — Panel Admin</span>
+        </div>
+        <div class="navbar-right">
+            <span class="usuario">{{ authService.getUsuario() }}</span>
+            <button class="btn-logout" (click)="logout()">Cerrar sesión</button>
+        </div>
+    </nav>
+
+    <div class="admin-body">
+
+        <aside class="sidebar" [class.abierto]="menuAbierto">
+            <nav class="sidebar-nav">
+                <div class="nav-item" [class.activo]="estaActivo('/dashboard')" (click)="navegarA('/dashboard')">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-label">Dashboard</span>
+                </div>
+                <div class="nav-item" *ngIf="authService.isAdmin()" [class.activo]="estaActivo('/productos')"
+                    (click)="navegarA('/productos')">
+                    <span class="nav-icon">💰</span>
+                    <span class="nav-label">Precios</span>
+                </div>
+                <div class="nav-item" *ngIf="authService.isAdmin()" [class.activo]="estaActivo('/clientes')"
+                    (click)="navegarA('/clientes')">
+                    <span class="nav-icon">👥</span>
+                    <span class="nav-label">Clientes</span>
+                </div>
+                <div class="nav-item" *ngIf="authService.isAdmin()" [class.activo]="estaActivo('/cupones')"
+                    (click)="navegarA('/cupones')">
+                    <span class="nav-icon">🎟️</span>
+                    <span class="nav-label">Cupones</span>
+                </div>
+                <div class="nav-item" *ngIf="authService.isAdmin()" [class.activo]="estaActivo('/zonas')"
+                    (click)="navegarA('/zonas')">
+                    <span class="nav-icon">📍</span>
+                    <span class="nav-label">Zonas</span>
+                </div>
+            </nav>
+        </aside>
+
+        <main class="admin-content" (click)="menuAbierto = false">
+            <ng-content></ng-content>
+        </main>
+
+    </div>
+
+</div>

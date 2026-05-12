@@ -1,0 +1,35 @@
+<div class="login-container">
+  <div class="login-card">
+
+    <div class="login-header">
+      <h1>🧊 Frescor</h1>
+      <p>Panel administrativo</p>
+    </div>
+
+    <div class="login-form">
+      <div class="field">
+        <label>Usuario</label>
+        <input type="text"
+               [(ngModel)]="usuario"
+               placeholder="Ingresá tu usuario"
+               (keyup.enter)="login()">
+      </div>
+
+      <div class="field">
+        <label>Contraseña</label>
+        <input type="password"
+               [(ngModel)]="contrasena"
+               placeholder="Ingresá tu contraseña"
+               (keyup.enter)="login()">
+      </div>
+
+      <p class="error" *ngIf="error">{{ error }}</p>
+
+      <button class="btn-login" (click)="login()" [disabled]="cargando">
+        <span *ngIf="!cargando">Ingresar</span>
+        <span *ngIf="cargando">Ingresando...</span>
+      </button>
+    </div>
+
+  </div>
+</div>

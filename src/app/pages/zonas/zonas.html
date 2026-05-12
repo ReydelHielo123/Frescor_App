@@ -1,0 +1,72 @@
+<app-admin-layout>
+
+    <div class="page-header">
+        <div>
+            <h2>Zonas de reparto</h2>
+            <p>Administrá las zonas de entrega.</p>
+        </div>
+        <button class="btn-nuevo" (click)="abrirNuevo()">+ Nueva zona</button>
+    </div>
+
+    <div class="mensaje-exito" *ngIf="mensajeExito">✅ {{ mensajeExito }}</div>
+    <div class="mensaje-error" *ngIf="mensajeError && !modalAbierto">❌ {{ mensajeError }}</div>
+
+    <div class="cargando" *ngIf="cargando">Cargando...</div>
+
+    <div class="zona-card" *ngFor="let z of zonas">
+        <div class="zona-numero">
+            <span>Zona</span>
+            <strong>{{ z.zona1 }}</strong>
+        </div>
+        <div class="zona-barrio">{{ z.barrio }}</div>
+        <div class="zona-acciones">
+            <button class="btn-editar" (click)="abrirEdicion(z)">✏️ Editar</button>
+            <button class="btn-eliminar" (click)="confirmarEliminar(z)">🗑️</button>
+        </div>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" *ngIf="modalAbierto" (click)="cerrarModal()">
+        <div class="modal" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h3>{{ modoEdicion ? 'Editar zona' : 'Nueva zona' }}</h3>
+                <button class="modal-close" (click)="cerrarModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-field">
+                    <label>Número de zona *</label>
+                    <input type="number" [(ngModel)]="zonaForm.zona1" placeholder="Ej: 1">
+                </div>
+                <div class="form-field">
+                    <label>Barrio *</label>
+                    <input type="text" [(ngModel)]="zonaForm.barrio" placeholder="Ej: Centro">
+                </div>
+                <p class="error" *ngIf="mensajeError">{{ mensajeError }}</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancelar" (click)="cerrarModal()">Cancelar</button>
+                <button class="btn-guardar" (click)="guardar()" [disabled]="guardando">
+                    {{ guardando ? 'Guardando...' : 'Guardar' }}
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" *ngIf="modalEliminarAbierto" (click)="cancelarEliminar()">
+        <div class="modal modal-confirmar" (click)="$event.stopPropagation()">
+            <div class="modal-header danger">
+                <h3>Confirmar eliminación</h3>
+                <button class="modal-close" (click)="cancelarEliminar()">✕</button>
+            </div>
+            <div class="modal-body">
+                <p>¿Seguro que querés eliminar esta zona?</p>
+                <p class="detalle-eliminar">📍 Zona {{ zonaAEliminar?.zona1 }} — {{ zonaAEliminar?.barrio }}</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancelar" (click)="cancelarEliminar()">Cancelar</button>
+                <button class="btn-eliminar-confirmar" (click)="eliminar()">Sí, eliminar</button>
+            </div>
+        </div>
+    </div>
+
+</app-admin-layout>
