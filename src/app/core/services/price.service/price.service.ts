@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../../model/ApiResponse/ApiResponse';
 import { IPrecio } from '../../model/precio/i-precio';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,7 @@ import { IPrecio } from '../../model/precio/i-precio';
 export class PriceService {
   private http = inject(HttpClient);
 
-  private apiUrl = '${environment.apiUrl}';
+  private apiUrl = environment.apiUrl;;
 
   obtenerPrecios(): Observable<ApiResponse<IPrecio[]>> {
     return this.http.get<ApiResponse<IPrecio[]>>(

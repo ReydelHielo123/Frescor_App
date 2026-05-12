@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { iTelefonoDireccion } from '../../model/telefonoDireccion/i-telefono-direccion';
 import { ApiResponse } from '../../model/ApiResponse/ApiResponse';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,7 @@ import { ApiResponse } from '../../model/ApiResponse/ApiResponse';
 export class TelefonoDireccionService {
   private http = inject(HttpClient);
 
-  private apiUrl = '${environment.apiUrl}';
+  private apiUrl = environment.apiUrl;;
 
 
   obtenerDirecciones(telefono: string): Observable<ApiResponse<iTelefonoDireccion[]>> {
