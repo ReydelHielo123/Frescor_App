@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class PaymentService {
   private http = inject(HttpClient);
-  private apiUrl = 'https://localhost:7175/api';
+  private apiUrl = '${environment.apiUrl}';
 
   crearPreferencia(total: number, orderId: number) {
     return this.http.post<ApiResponse<string>>(

@@ -8,7 +8,7 @@ import { IPedido } from '../../model/pedido/i-pedido';
 })
 export class PedidoService {
   private http = inject(HttpClient);
-  private apiUrl = 'https://localhost:7175/api';
+  private apiUrl = '${environment.apiUrl}';
 
   insertarPedido(pedido: IPedido): Observable<any> {
     return this.http.post(`${this.apiUrl}/orders`, pedido);

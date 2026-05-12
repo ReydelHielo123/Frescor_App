@@ -10,7 +10,7 @@ import { IPrecio } from '../../model/precio/i-precio';
 export class PriceService {
   private http = inject(HttpClient);
 
-  private apiUrl = 'https://localhost:7175/api';
+  private apiUrl = '${environment.apiUrl}';
 
   obtenerPrecios(): Observable<ApiResponse<IPrecio[]>> {
     return this.http.get<ApiResponse<IPrecio[]>>(

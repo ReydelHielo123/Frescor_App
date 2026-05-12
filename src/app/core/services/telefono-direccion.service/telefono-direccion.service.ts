@@ -10,7 +10,7 @@ import { ApiResponse } from '../../model/ApiResponse/ApiResponse';
 export class TelefonoDireccionService {
   private http = inject(HttpClient);
 
-  private apiUrl = 'https://localhost:7175/api';
+  private apiUrl = '${environment.apiUrl}';
 
 
   obtenerDirecciones(telefono: string): Observable<ApiResponse<iTelefonoDireccion[]>> {
