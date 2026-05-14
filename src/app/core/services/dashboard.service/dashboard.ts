@@ -41,24 +41,31 @@ export class DashboardService {
   }
 
   exportarExcel(pedidos: any[]): void {
-    const headers = ['ID', 'Dirección', 'Fecha', 'Kg1.5', 'Kg2.5', 'Kg10.5', 'Triturado', 'Kg4.5', 'Total', 'Zona', 'Forma de Pago', 'Estado'];
+    const headers = ['Direccion', 'Tel', 'Zona', '10,5kg', '4,5kg', '2,5kg', '1,5kg', 'Trit', 'Fecha_Carga', 'Precio_Total', 'FormaPago'];
+
+    const mapFormaPago = (fp: string): string => {
+      if (!fp) return '';
+      const lower = fp.toLowerCase();
+      if (lower === 'efectivo') return 'EFT';
+      if (lower === 'mercadopago') return 'MP';
+      return fp;
+    };
 
     const rows = pedidos.map(p => [
-      p.id,
       `"${(p.direccion || '').replace(/"/g, '""')}"`,
-      new Date(p.fecha_Carga).toLocaleDateString('es-AR'),
-      p.kg1_5,
-      p.kg2_5,
-      p.kg10_5,
-      p.triturado,
-      p.kg4_5,
-      p.precio_Total,
+      p.telefono || '',
       p.zona,
-      p.formaPago,
-      p.estado
+      p.kg10_5,
+      p.kg4_5,
+      p.kg2_5,
+      p.kg1_5,
+      p.triturado,
+      p.fecha_Carga || '',
+      p.precio_Total,
+      mapFormaPago(p.formaPago)
     ]);
 
-    const csvContent = [headers.join(';'), ...rows.map(r => r.join(';'))].join('\n');
+    const csvContent = ['sep=;', headers.join(';'), ...rows.map(r => r.join(';'))].join('\n');
 
     const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);

@@ -131,7 +131,7 @@ export class Pedido implements OnInit {
   }
   getTotal() {
     const total15 = (this.cantidades.bolsa15 ?? 0) * (this.getPriceByBadge('1,5kg') / 10);
-    const total25 = (this.cantidades.bolsa25 ?? 0) * (this.getPriceByBadge('2,5kg') / 8);
+    const total25 = (this.cantidades.bolsa25 ?? 0) * (this.getPriceByBadge('2,5kg') / 7);
     const total45 = (this.cantidades.bolsa45 ?? 0) * (this.getPriceByBadge('4,5kg') / 4);
     const total10 = (this.cantidades.bolsa10 ?? 0) * this.getPriceByBadge('10kg');
     const totalTriturado = (this.cantidades.triturado10 ?? 0) * this.getPriceByBadge('Triturado');
@@ -235,7 +235,7 @@ export class Pedido implements OnInit {
         },
         error: (err) => {
           console.error(err);
-          this.errorMedioPago = 'Error al conectar con Mercado Pago.';
+          this.errorMedioPago = err?.error?.message || 'Error al conectar con Mercado Pago.';
           this.isProcessingPayment = false;
         }
       });
