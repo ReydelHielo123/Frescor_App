@@ -242,6 +242,7 @@ export class Pedido implements OnInit {
   }
   createOrder(): IPedido {
     return {
+      telefono: this.telefono,
       direccion: this.direccionSeleccionada?.direccion || '',
       kg10_5: this.cantidades.bolsa10 ?? 0,
       kg2_5: this.cantidades.bolsa25 ?? 0,

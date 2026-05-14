@@ -1,5 +1,6 @@
 export interface IPedido {
     id?: number;
+    telefono?: string;
     direccion: string;
     kg10_5: number;
     kg2_5: number;
