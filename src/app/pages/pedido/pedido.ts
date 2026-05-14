@@ -248,7 +248,7 @@ export class Pedido implements OnInit {
       kg1_5: this.cantidades.bolsa15 ?? 0,
       triturado: this.cantidades.triturado10 ?? 0,
       kg4_5: this.cantidades.bolsa45 ?? 0,
-      fecha_Carga: new Date().toISOString(),
+      fecha_Carga: new Date(new Date().getTime() - (3 * 60 * 60 * 1000)).toISOString(),
       precio_Total: this.totalPedido.toFixed(2),
       zona: this.direccionSeleccionada?.zona ?? 0,
       formaPago: this.medioPago,
