@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\diego\\\\Documents\\\\Proyectos\\\\Frescor-App\\(old\\)\\\\src\\\\app\\\\pages\" -Directory)",
+      "Bash(Select-Object Name)"
+    ]
+  }
+}

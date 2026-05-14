@@ -129,6 +129,38 @@
     background: white;
 }
 
+.date-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.date-input-wrapper input[type="date"] {
+    width: 100%;
+    padding-right: 36px;
+}
+
+.date-input-wrapper input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+}
+
+.btn-calendario {
+    position: absolute;
+    right: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #5F5E5A;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.btn-calendario:hover {
+    color: #378ADD;
+}
+
 .filtros-botones {
     display: flex;
     gap: 10px;
