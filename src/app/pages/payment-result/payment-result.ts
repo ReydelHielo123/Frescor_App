@@ -26,6 +26,6 @@ export class PaymentResultComponent implements OnInit {
   }
 
   volverInicio(): void {
-    this.router.navigate(['/']);
+    this.router.navigate(['/pedido']);
   }
 }
