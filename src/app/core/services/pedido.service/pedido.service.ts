@@ -15,4 +15,8 @@ export class PedidoService {
     return this.http.post(`${this.apiUrl}/orders`, pedido);
   }
 
+  obtenerPedidoPorId(id: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/orders/${id}`);
+  }
+
 }

@@ -13,8 +13,8 @@
             <p>Tu pedido fue confirmado correctamente.</p>
             <p class="detail" *ngIf="paymentId">Operación: #{{ paymentId }}</p>
             <p class="detail" *ngIf="orderId">Pedido: #{{ orderId }}</p>
-            <button class="btn-descarga" (click)="descargarComprobante()" [disabled]="descargando">
-                {{ descargando ? 'Descargando...' : 'Descargar comprobante' }}
+            <button class="btn-descarga" (click)="descargarComprobante()">
+                Descargar comprobante
             </button>
         </div>
 

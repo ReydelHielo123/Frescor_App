@@ -68,17 +68,26 @@
     color: #E24B4A;
 }
 
-button {
+.btn-descarga {
     margin-top: 2rem;
-    background: #378ADD !important;
-    color: white !important;
+    background: #1D9E75;
+    color: white;
     height: 48px;
     padding: 0 2rem;
     width: 100%;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-descarga:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 .btn-volver {
-    margin-top: 2rem;
+    margin-top: 1rem;
     background: #378ADD;
     color: white;
     height: 48px;
