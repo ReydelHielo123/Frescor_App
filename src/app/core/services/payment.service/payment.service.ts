@@ -19,7 +19,7 @@ export class PaymentService {
 
   downloadReceipt(orderId: number) {
     return this.http.get(
-      `${this.apiUrl}/Payment/Receipt/${orderId}`,
+      `${this.apiUrl}/payment/GenerateReceipt?orderId=${orderId}`,
       { responseType: 'blob' }
     );
   }
