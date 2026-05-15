@@ -217,7 +217,7 @@ export class Pedido implements OnInit {
         return 'Cargar pedido';
       }
 
-      return 'Seleccioná un medio';
+      return 'Continuar';
     }
 
     return 'Continuar';
