@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { PaymentService } from '../../core/services/payment.service/payment.service';
 
 @Component({
@@ -18,23 +18,29 @@ export class PaymentResultComponent implements OnInit {
   descargando = false;
 
   constructor(
-    private route: ActivatedRoute,
     private router: Router,
     private paymentService: PaymentService
   ) { }
 
   ngOnInit(): void {
-    // MP con hash routing agrega params antes del #, leerlos de window.location.search
-    const urlParams = new URLSearchParams(window.location.search);
+    // MP puede agregar params antes O después del # según la versión
+    const beforeHash = new URLSearchParams(window.location.search);
+    const hash = window.location.hash;
+    const afterHash = hash.includes('?')
+      ? new URLSearchParams(hash.substring(hash.indexOf('?') + 1))
+      : new URLSearchParams();
 
-    this.route.queryParams.subscribe(params => {
-      this.status = params['status'] || params['collection_status']
-        || urlParams.get('status') || urlParams.get('collection_status') || null;
-      this.paymentId = params['payment_id'] || params['collection_id']
-        || urlParams.get('payment_id') || urlParams.get('collection_id') || null;
-      this.orderId = params['external_reference']
-        || urlParams.get('external_reference') || null;
-    });
+    const get = (...keys: string[]): string | null => {
+      for (const k of keys) {
+        const v = beforeHash.get(k) || afterHash.get(k);
+        if (v) return v;
+      }
+      return null;
+    };
+
+    this.status = get('status', 'collection_status');
+    this.paymentId = get('payment_id', 'collection_id');
+    this.orderId = get('external_reference');
   }
 
   descargarComprobante(): void {
