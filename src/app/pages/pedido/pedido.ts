@@ -222,9 +222,8 @@ export class Pedido implements OnInit {
     return 'Continuar';
   }
   createMPReference(orderId: number) {
-    this.totalPedido = 1;
     this.paymentService
-      .crearPreferencia(this.totalPedido, orderId)
+      .crearPreferencia(1, orderId)
       .subscribe({
         next: (response) => {
           if (response.success) {
