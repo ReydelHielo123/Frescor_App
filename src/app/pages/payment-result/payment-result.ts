@@ -36,6 +36,24 @@ export class PaymentResultComponent implements OnInit {
     this.status = get('status', 'collection_status');
     this.paymentId = get('payment_id', 'collection_id');
     this.orderId = get('external_reference');
+
+    // Fallback mobile: si MP no pasó params, leer orderId del localStorage y consultar la API
+    if (!this.orderId) {
+      this.orderId = localStorage.getItem('lastOrderId');
+    }
+
+    if (this.orderId && !this.status) {
+      this.pedidoService.obtenerPedidoPorId(Number(this.orderId)).subscribe({
+        next: (response) => {
+          if (!response.success) return;
+          const p = response.data;
+          if (p.estado === 'Pagado') this.status = 'approved';
+          else if (p.estado === 'PagoPendiente') this.status = 'pending';
+          else if (p.estado === 'PagoRechazado') this.status = 'rejected';
+          if (p.paymentId) this.paymentId = p.paymentId;
+        }
+      });
+    }
   }
 
   descargarComprobante(): void {

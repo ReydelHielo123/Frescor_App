@@ -191,6 +191,7 @@ export class Pedido implements OnInit {
             this.isProcessingPayment = false;
             return;
           }
+          localStorage.setItem('lastOrderId', pedidoGuardado.id.toString());
           this.createMPReference(pedidoGuardado.id);
           return;
         }
