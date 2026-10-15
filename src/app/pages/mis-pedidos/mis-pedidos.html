@@ -37,7 +37,6 @@
           <article class="order-card">
             <div class="order-heading">
               <div><h3>Pedido #{{ pedido.id }}</h3><time>{{ pedido.fecha_Carga | date:'dd/MM/yyyy · HH:mm' }}</time></div>
-              <span class="status" [class.paid]="pedido.estado === 'Pagado'" [class.rejected]="pedido.estado === 'PagoRechazado'">{{ estado(pedido.estado) }}</span>
             </div>
             <ul>@for (producto of productos(pedido); track producto) { <li>{{ producto }}</li> }</ul>
             <div class="order-footer"><span>{{ pedido.formaPago.toLowerCase() === 'mercadopago' ? 'Mercado Pago' : pedido.formaPago }}</span><strong>{{ pedido.precio_Total | currency:'ARS':'symbol-narrow':'1.2-2' }}</strong></div>

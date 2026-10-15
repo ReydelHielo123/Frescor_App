@@ -20,12 +20,10 @@ a:focus-visible, input:focus-visible, button:focus-visible { outline: 3px solid 
 .results { margin-top: 28px; }
 .results-heading, .order-heading, .order-footer, .pagination { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 h2 { font-size: 20px; font-weight: 700; }
-.results-heading p, time, .order-footer span { color: var(--color-frost-500); font-size: 13px; }
+.results-heading p, .order-footer span { color: var(--color-frost-500); font-size: 13px; }
+time { display: block; margin-top: 6px; color: var(--color-ice-800); font-size: 18px; font-weight: 600; line-height: 1.5; }
 .order-card { margin-top: 14px; padding: 24px; }
 h3 { font-weight: 700; }
-.status { background: #fffbeb; color: #92400e; border-radius: 100px; padding: 5px 10px; font-size: 12px; }
-.status.paid { background: #f0fdf4; color: #166534; }
-.status.rejected { background: #fef2f2; color: #b91c1c; }
 ul { margin: 20px 0; font-size: 14px; line-height: 1.9; }
 .order-footer { border-top: 1px solid var(--color-frost-100); padding-top: 16px; }
 .order-footer strong { color: var(--color-ice-700); font-size: 22px; }
