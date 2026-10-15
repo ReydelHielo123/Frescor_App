@@ -1,3 +1,4 @@
+import { RouterLink } from '@angular/router';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { iTelefonoDireccion } from '../../core/model/telefonoDireccion/i-telefono-direccion';
@@ -12,7 +13,7 @@ import { PedidoService } from '../../core/services/pedido.service/pedido.service
 
 @Component({
   selector: 'app-pedido',
-  imports: [FormsModule, CurrencyPipe, DatePipe],
+  imports: [FormsModule, CurrencyPipe, DatePipe, RouterLink],
   standalone: true,
   templateUrl: './pedido.html',
   styleUrl: './pedido.css',

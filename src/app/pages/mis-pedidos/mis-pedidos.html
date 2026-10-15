@@ -1,0 +1,56 @@
+<main class="history-page">
+  <div class="history-container">
+    <a routerLink="/pedido" class="back-link">← Hacer un pedido</a>
+    <section class="search-card" aria-labelledby="history-title">
+      <img src="logo-frescor.jpeg" alt="Hielo Fres-Cor" class="logo-frescor">
+      <span class="period">ÚLTIMOS 14 DÍAS</span>
+      <h1 id="history-title">Mis pedidos</h1>
+      <p class="intro">Tus últimos pedidos, en un solo lugar.</p>
+      <form (ngSubmit)="buscar()" novalidate>
+        <label for="history-phone">Número de teléfono</label>
+        <p id="phone-help" class="help">Usá el mismo número con el que hiciste tu pedido, con código de área.</p>
+        <div class="search-row">
+          <input id="history-phone" name="telefono" type="tel" inputmode="tel" autocomplete="tel"
+            [(ngModel)]="telefono" placeholder="351 123 4567" maxlength="25"
+            aria-describedby="phone-help" [disabled]="cargando()" required>
+          <button type="submit" [disabled]="cargando()">{{ cargando() ? 'Buscando…' : 'Consultar pedidos' }}</button>
+        </div>
+      </form>
+      @if (error()) { <p class="error" role="alert">{{ error() }}</p> }
+    </section>
+    <section class="results" aria-live="polite" [attr.aria-busy]="cargando()">
+      @if (cargando()) { <p class="notice" role="status">Estamos buscando tus pedidos…</p> }
+      @if (consultado() && !cargando()) {
+        <div class="results-heading">
+          <h2>Pedidos recientes</h2>
+          <p>{{ desde | date:'dd/MM/yyyy' }} al {{ hasta | date:'dd/MM/yyyy' }}</p>
+        </div>
+        <p class="help">Teléfono consultado: {{ telefonoConsultado }}</p>
+        @if (pedidos().length === 0) {
+          <div class="empty-state">
+            <h3>No encontramos pedidos en estas dos semanas</h3>
+            <p>Revisá el número ingresado o hacé tu próximo pedido.</p>
+            <a routerLink="/pedido" class="action-link">Hacer un pedido</a>
+          </div>
+        }
+        @for (pedido of pedidos(); track pedido.id ?? $index) {
+          <article class="order-card">
+            <div class="order-heading">
+              <div><h3>Pedido #{{ pedido.id }}</h3><time>{{ pedido.fecha_Carga | date:'dd/MM/yyyy · HH:mm' }}</time></div>
+              <span class="status" [class.paid]="pedido.estado === 'Pagado'" [class.rejected]="pedido.estado === 'PagoRechazado'">{{ estado(pedido.estado) }}</span>
+            </div>
+            <ul>@for (producto of productos(pedido); track producto) { <li>{{ producto }}</li> }</ul>
+            <div class="order-footer"><span>{{ pedido.formaPago.toLowerCase() === 'mercadopago' ? 'Mercado Pago' : pedido.formaPago }}</span><strong>{{ pedido.precio_Total | currency:'ARS':'symbol-narrow':'1.2-2' }}</strong></div>
+          </article>
+        }
+        @if (totalPaginas() > 1) {
+          <nav class="pagination" aria-label="Páginas de pedidos">
+            <button type="button" (click)="cargar(pagina() - 1)" [disabled]="pagina() === 1 || cargando()">Anterior</button>
+            <span>Página {{ pagina() }} de {{ totalPaginas() }}</span>
+            <button type="button" (click)="cargar(pagina() + 1)" [disabled]="pagina() >= totalPaginas() || cargando()">Siguiente</button>
+          </nav>
+        }
+      }
+    </section>
+  </div>
+</main>

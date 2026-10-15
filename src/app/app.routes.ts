@@ -4,6 +4,7 @@ import { authGuard } from './core/guards/auth-guard';
 import { adminGuard } from './core/guards/admin-guard';
 
 export const routes: Routes = [
+  { path: 'mis-pedidos', loadComponent: () => import('./pages/mis-pedidos/mis-pedidos').then(m => m.MisPedidos) },
 	{ path: '', component: LandingComponent },
 	{
 		path: 'pedido',
