@@ -358,7 +358,7 @@ export class Pedido implements OnInit {
         addRow('Fecha:', fecha);
         addRow('Dirección:', this.direccionSeleccionada?.direccionMayusculas || '');
         addRow('Zona:', `${p.zona}`);
-        addRow('Forma de pago:', p.formaPago === 'mercadopago' ? 'Mercado Pago' : 'Efectivo');
+        addRow('Forma de pago:', p.formaPago === 'transferencia' ? 'Transferencia' : p.formaPago === 'mercadopago' ? 'Mercado Pago' : 'Efectivo');
         if (p.paymentId) addRow('Payment ID:', p.paymentId);
         addRow('Estado:', p.estado === 'Pagado' ? 'Pagado' : 'Pendiente de pago');
 

@@ -3,17 +3,17 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AdminLayoutComponent } from '../../layout/admin-layout/admin-layout';
 import { TelefonoDireccionService } from '../../core/services/telefono-direccion.service/telefono-direccion.service';
-import { DashboardService } from '../../core/services/dashboard.service/dashboard';
+import { PedidoService } from '../../core/services/pedido.service/pedido.service';
 import { BoletaService } from '../../core/services/boleta.service/boleta.service';
 import { PriceService } from '../../core/services/price.service/price.service';
 import { iTelefonoDireccion } from '../../core/model/telefonoDireccion/i-telefono-direccion';
-import { IPedido } from '../../core/model/pedido/i-pedido';
+import { IPedidoReciente } from '../../core/model/pedido/i-pedido-reciente';
 import { IBoleta } from '../../core/model/boleta/i-boleta';
 import { IPrecio } from '../../core/model/precio/i-precio';
 
 interface BolsaMap {
   tipo: string;
-  campo: keyof IPedido;
+  campo: keyof IPedidoReciente;
   divisor: number;
 }
 
@@ -44,14 +44,19 @@ export class GenerarBoletaComponent implements OnInit {
   direccionSeleccionada: iTelefonoDireccion | null = null;
 
   // Pedidos del cliente
-  pedidos: IPedido[] = [];
+  pedidos: IPedidoReciente[] = [];
   cargandoPedidos = false;
+  errorPedidos = '';
+  paginaPedidos = 1;
+  totalPaginas = 0;
+  private consulta = 0;
+  private telefonoConsultado = '';
 
   // Precios
   private precios: IPrecio[] = [];
 
   // Estado boleta
-  pedidoEnProceso: IPedido | null = null;
+  pedidoEnProceso: IPedidoReciente | null = null;
   generando = false;
   mensajeError = '';
   boletasGeneradas = new Set<number>();
@@ -65,7 +70,7 @@ export class GenerarBoletaComponent implements OnInit {
 
   constructor(
     private telefonoDireccionService: TelefonoDireccionService,
-    private dashboardService: DashboardService,
+    private pedidoService: PedidoService,
     private boletaService: BoletaService,
     private priceService: PriceService
   ) {}
@@ -79,6 +84,15 @@ export class GenerarBoletaComponent implements OnInit {
   buscar(): void {
     const tel = this.telefono.trim();
     if (!tel) return;
+    if (this.generando) return;
+    const consulta = ++this.consulta;
+    this.telefonoConsultado = tel;
+    this.cargandoPedidos = false;
+    this.errorPedidos = '';
+    this.mensajeError = '';
+    this.totalPaginas = 0;
+    this.paginaPedidos = 1;
+    this.boletasExistentes.clear();
     this.buscando = true;
     this.errorBusqueda = '';
     this.direcciones = [];
@@ -88,39 +102,53 @@ export class GenerarBoletaComponent implements OnInit {
 
     this.telefonoDireccionService.obtenerDirecciones(tel).subscribe({
       next: (res) => {
+        if (consulta !== this.consulta) return;
         this.buscando = false;
         if (res.success && res.data?.length > 0) {
           this.direcciones = res.data;
           if (res.data.length === 1) this.direccionSeleccionada = res.data[0];
           this.cargarPedidos();
+          this.cargarBoletas(tel, consulta);
         } else {
           this.errorBusqueda = 'No se encontró el cliente con ese teléfono.';
         }
       },
       error: () => {
+        if (consulta !== this.consulta) return;
         this.buscando = false;
         this.errorBusqueda = 'Error al buscar el cliente.';
       }
     });
   }
 
-  cargarPedidos(): void {
-    const tel = this.telefono.trim();
-    if (!tel) return;
+  cargarPedidos(pagina = 1): void {
+    if (!this.telefonoConsultado || this.cargandoPedidos) return;
+    const consulta = this.consulta;
     this.cargandoPedidos = true;
+    this.errorPedidos = '';
+    this.paginaPedidos = pagina;
     this.pedidos = [];
-    this.boletasExistentes.clear();
-
-    this.dashboardService.filtrarPedidos({ telefono: tel, tamañoPagina: 10 }).subscribe({
-      next: (res) => {
+    const fallo = () => {
+      if (consulta !== this.consulta) return;
+      this.cargandoPedidos = false;
+      this.errorPedidos = 'No se pudieron cargar los pedidos.';
+    };
+    this.pedidoService.obtenerPedidosRecientes(this.telefonoConsultado, pagina).subscribe({
+      next: res => {
+        if (consulta !== this.consulta) return;
+        if (!res.success || !Array.isArray(res.data?.items)) { fallo(); return; }
+        this.pedidos = res.data.items;
+        this.totalPaginas = res.data.totalPaginas;
         this.cargandoPedidos = false;
-        if (res.success && res.data?.items) this.pedidos = res.data.items;
       },
-      error: () => { this.cargandoPedidos = false; }
+      error: fallo
     });
+  }
 
+  private cargarBoletas(tel: string, consulta: number): void {
     this.boletaService.getByTelefono(tel).subscribe({
       next: (res) => {
+        if (consulta !== this.consulta) return;
         if (res.success && res.data) {
           this.boletasExistentes = new Set(
             res.data.filter(b => b.pedidoId != null).map(b => b.pedidoId!)
@@ -130,11 +158,11 @@ export class GenerarBoletaComponent implements OnInit {
     });
   }
 
-  yaGenerada(pedido: IPedido): boolean {
+  yaGenerada(pedido: IPedidoReciente): boolean {
     return !!(pedido.id && (this.boletasGeneradas.has(pedido.id) || this.boletasExistentes.has(pedido.id)));
   }
 
-  getItemsPedido(pedido: IPedido): { tipo: string; cantidad: number; precioUnit: number; subtotal: number }[] {
+  getItemsPedido(pedido: IPedidoReciente): { tipo: string; cantidad: number; precioUnit: number; subtotal: number }[] {
     return this.BOLSAS
       .filter(b => (pedido[b.campo] as number) > 0)
       .map(b => {
@@ -149,8 +177,12 @@ export class GenerarBoletaComponent implements OnInit {
     return precio ? precio.precio1 / divisor : 0;
   }
 
-  getTotalPedido(pedido: IPedido): number {
+  getTotalPedido(pedido: IPedidoReciente): number {
     return parseFloat(pedido.precio_Total) || 0;
+  }
+
+  esEfectivo(pedido: IPedidoReciente): boolean {
+    return pedido.formaPago?.trim().toLowerCase() === 'efectivo';
   }
 
   formatFecha(fecha: string): string {
@@ -158,7 +190,7 @@ export class GenerarBoletaComponent implements OnInit {
     return new Date(fecha).toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' });
   }
 
-  generarBoleta(pedido: IPedido): void {
+  generarBoleta(pedido: IPedidoReciente): void {
     if (!this.direccionSeleccionada) {
       this.mensajeError = 'Seleccioná una dirección primero.';
       return;
@@ -178,11 +210,11 @@ export class GenerarBoletaComponent implements OnInit {
 
     const boleta: IBoleta = {
       pedidoId: pedido.id,
-      telefono: this.telefono.trim(),
+      telefono: this.telefonoConsultado,
       direccion: this.direccionSeleccionada.direccion,
       fechaBoleta: (pedido.fecha_Carga ?? new Date().toISOString()).split('T')[0],
       importeTotal: importeCalculado,
-      importeConDescuento: tieneDescuento ? importeReal : undefined,
+      importeConDescuento: !this.esEfectivo(pedido) && tieneDescuento ? importeReal : undefined,
       estado: 'Pendiente',
       items: items.map(i => ({
         tipoBolsa: i.tipo,
@@ -197,6 +229,10 @@ export class GenerarBoletaComponent implements OnInit {
         this.generando = false;
         if (res.success) {
           if (pedido.id) this.boletasExistentes.add(pedido.id);
+          if (this.esEfectivo(pedido)) {
+            pedido.formaPago = 'transferencia';
+            pedido.precio_Total = (res.data.importeConDescuento ?? res.data.importeTotal).toFixed(2);
+          }
           this.abrirComprobante(res.data);
         } else {
           // Rollback: habilitar el botón si la API rechazó la creación
@@ -205,11 +241,11 @@ export class GenerarBoletaComponent implements OnInit {
           this.pedidoEnProceso = null;
         }
       },
-      error: () => {
+      error: (err) => {
         // Rollback: habilitar el botón si hubo error de red
         if (pedido.id) this.boletasGeneradas.delete(pedido.id);
         this.generando = false;
-        this.mensajeError = 'Error al guardar la boleta.';
+        this.mensajeError = err.error?.message || 'Error al guardar la boleta.';
         this.pedidoEnProceso = null;
       }
     });
@@ -350,7 +386,7 @@ export class GenerarBoletaComponent implements OnInit {
       ctx.textAlign = 'right';
       ctx.font = 'bold 20px Arial, sans-serif';
       const total = boleta.importeConDescuento ?? boleta.importeTotal;
-      ctx.fillText(`$${total.toLocaleString('es-AR', { maximumFractionDigits: 0 })}`, W - PAD - 16, y + 29);
+      ctx.fillText(`$${total.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, W - PAD - 16, y + 29);
       ctx.textAlign = 'left';
       y += 60;
 

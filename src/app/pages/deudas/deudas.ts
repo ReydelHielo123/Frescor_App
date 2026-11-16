@@ -403,7 +403,7 @@ export class DeudasComponent implements OnInit {
       ctx.textAlign = 'right';
       ctx.font = 'bold 20px Arial, sans-serif';
       const total = boleta.importeConDescuento ?? boleta.importeTotal;
-      ctx.fillText(`$${total.toLocaleString('es-AR', { maximumFractionDigits: 0 })}`, W - PAD - 16, y + 29);
+      ctx.fillText(`$${total.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, W - PAD - 16, y + 29);
       ctx.textAlign = 'left';
       y += 60;
 

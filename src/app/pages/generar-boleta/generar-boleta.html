@@ -41,7 +41,7 @@
     <!-- Lista de últimos pedidos -->
     @if (pedidos.length > 0 || cargandoPedidos) {
         <div class="pedidos-section">
-            <h3 class="seccion-titulo">Últimos pedidos</h3>
+            <h3 class="seccion-titulo">Pedidos de los últimos 14 días</h3>
 
             @if (cargandoPedidos) {
                 <div class="cargando">Cargando pedidos...</div>
@@ -55,7 +55,7 @@
                             <span class="pedido-fecha">{{ formatFecha(p.fecha_Carga) }}</span>
                             <span class="pedido-forma-pago">{{ p.formaPago }}</span>
                         </div>
-                        <div class="pedido-total">${{ getTotalPedido(p) | number:'1.0-0' }}</div>
+                        <div class="pedido-total">${{ getTotalPedido(p) | number:'1.2-2' }}</div>
                     </div>
 
                     @if (getItemsPedido(p).length > 0) {
@@ -72,6 +72,9 @@
                     }
 
                     <div class="pedido-footer">
+                        @if (esEfectivo(p) && !yaGenerada(p)) {
+                            <small>Al generar la boleta, el pedido pasa a transferencia pendiente y pierde el descuento por efectivo.</small>
+                        }
                         @if (yaGenerada(p)) {
                             <span class="ya-generado">✅ Boleta generada</span>
                         } @else {
@@ -87,8 +90,20 @@
         </div>
     }
 
-    @if (!cargandoPedidos && direcciones.length > 0 && pedidos.length === 0) {
-        <div class="sin-pedidos">No se encontraron pedidos recientes para este cliente.</div>
+    @if (errorPedidos) {
+        <p class="error-msg" role="alert">{{ errorPedidos }}
+            <button type="button" (click)="cargarPedidos(paginaPedidos)">Reintentar</button>
+        </p>
+    }
+    @if (!cargandoPedidos && !errorPedidos && totalPaginas > 1) {
+        <nav class="pedido-footer" aria-label="Páginas de pedidos">
+            <button (click)="cargarPedidos(paginaPedidos - 1)" [disabled]="paginaPedidos <= 1 || generando">Anterior</button>
+            <span>Página {{ paginaPedidos }} de {{ totalPaginas }}</span>
+            <button (click)="cargarPedidos(paginaPedidos + 1)" [disabled]="paginaPedidos >= totalPaginas || generando">Siguiente</button>
+        </nav>
+    }
+    @if (!cargandoPedidos && !errorPedidos && direcciones.length > 0 && pedidos.length === 0) {
+        <div class="sin-pedidos">Este cliente no tiene pedidos en los últimos 14 días.</div>
     }
 
     <!-- Modal comprobante -->
