@@ -23,6 +23,8 @@ h2 { font-size: 20px; font-weight: 700; }
 .results-heading p, .order-footer span { color: var(--color-frost-500); font-size: 13px; }
 time { display: block; margin-top: 6px; color: var(--color-ice-800); font-size: 18px; font-weight: 600; line-height: 1.5; }
 .order-card { margin-top: 14px; padding: 24px; }
+.order-address { margin-top: 16px; padding: 12px 16px; border-radius: 12px; background: var(--color-water-50); color: var(--color-frost-800); font-size: 16px; font-weight: 600; line-height: 1.5; overflow-wrap: anywhere; }
+.order-address span { display: block; margin-bottom: 4px; color: var(--color-ice-700); font-size: 12px; font-weight: 600; }
 h3 { font-weight: 700; }
 ul { margin: 20px 0; font-size: 14px; line-height: 1.9; }
 .order-footer { border-top: 1px solid var(--color-frost-100); padding-top: 16px; }

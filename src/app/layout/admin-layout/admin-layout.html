@@ -12,7 +12,6 @@
     </nav>
 
     <div class="admin-body">
-
         <aside class="sidebar" [class.abierto]="menuAbierto">
             <nav class="sidebar-nav">
                 <div class="nav-item" [class.activo]="estaActivo('/dashboard')" (click)="navegarA('/dashboard')">
@@ -44,7 +43,7 @@
                     <span class="nav-icon">💳</span>
                     <span class="nav-label">Deudas</span>
                 </div>
-                <div class="nav-item" *ngIf="!authService.isAdmin()" [class.activo]="estaActivo('/generar-boleta')"
+                <div class="nav-item" [class.activo]="estaActivo('/generar-boleta')"
                     (click)="navegarA('/generar-boleta')">
                     <span class="nav-icon">📋</span>
                     <span class="nav-label">Generar boleta</span>
