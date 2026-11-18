@@ -58,7 +58,7 @@ export const routes: Routes = [
 	},
 	{
 		path: 'generar-boleta',
-		canActivate: [adminGuard],
+		//canActivate: [adminGuard],
 		loadComponent: () =>
 			import('./pages/generar-boleta/generar-boleta').then(m => m.GenerarBoletaComponent)
 	},
